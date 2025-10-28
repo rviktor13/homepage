@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
 
-    // --- 1. Elemek kiválasztása --- (Változatlan)
+    // --- 1. Elemek kiválasztása ---
     const clockContainer = document.getElementById('clock-container');
-    // ... (a többi elem kiválasztása változatlan) ...
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-button');
     const bgUrlInput = document.getElementById('bg-url-input');
@@ -20,29 +19,35 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveLinkBtn = document.getElementById('save-link-btn');
     const cancelLinkBtn = document.getElementById('cancel-link-btn');
     const themeToggle = document.getElementById('theme-toggle');
+    const bgFileInput = document.getElementById('bg-file-input'); // Fájlfeltöltő input
+
     let wheelLinks = [];
 
     // --- 2. Óra, Háttérkép, Kereső ---
-    
-    // MÓDOSÍTOTT ÓRA FUNKCIÓ
+
+    // Óra funkció (másodpercekkel külön)
     function updateClock() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
         const minutes = String(now.getMinutes()).padStart(2, '0');
         const seconds = String(now.getSeconds()).padStart(2, '0');
         if (clockContainer) {
-            // MÓDOSÍTVA: innerHTML-t használunk, hogy a másodperc külön span-be kerüljön
             clockContainer.innerHTML = `<span>${hours}:${minutes}</span><span class="clock-seconds">:${seconds}</span>`;
         }
     }
     updateClock();
     setInterval(updateClock, 1000);
 
+    // Mentett háttérkép betöltése (URL vagy Data URL)
     const savedBg = localStorage.getItem('backgroundImageUrl');
     if (savedBg) {
         document.body.style.backgroundImage = `url(${savedBg})`;
-        bgUrlInput.value = savedBg;
+        if (savedBg.startsWith('http')) { // Csak akkor töltjük be az inputba, ha URL
+            bgUrlInput.value = savedBg;
+        }
     }
+
+    // Háttérkép beállítása URL-ből
     bgSetButton.addEventListener('click', () => {
         const newBgUrl = bgUrlInput.value;
         if (newBgUrl) {
@@ -51,6 +56,29 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
+    // Háttérkép beállítása fájlból
+    bgFileInput.addEventListener('change', (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = (e) => {
+                const dataUrl = e.target.result;
+                document.body.style.backgroundImage = `url(${dataUrl})`;
+                try {
+                    localStorage.setItem('backgroundImageUrl', dataUrl);
+                } catch (error) {
+                    if (error.name === 'QuotaExceededError') {
+                        alert('A kép túl nagy, hogy elmentsük. A háttér frissítés után el fog tűnni, de ebben a munkamenetben használhatod.');
+                    } else {
+                        console.error('Hiba a háttér mentésekor:', error);
+                    }
+                }
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    // Kereső
     function performSearch() {
         const query = searchInput.value;
         if (query) window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
@@ -58,7 +86,7 @@ document.addEventListener('DOMContentLoaded', () => {
     searchButton.addEventListener('click', performSearch);
     searchInput.addEventListener('keyup', (e) => e.key === 'Enter' && performSearch());
 
-    // --- 3. Időjárás (Változatlan) ---
+    // --- 3. Időjárás ---
     const wmoCodesHu = { 0: 'Tiszta ég', 1: 'Többnyire tiszta', 2: 'Részben felhős', 3: 'Borult', 45: 'Köd', 48: 'Deres köd', 51: 'Enyhe szitálás', 53: 'Mérsékelt szitálás', 55: 'Erős szitálás', 61: 'Enyhe eső', 63: 'Mérsékelt eső', 65: 'Erős eső', 71: 'Enyhe havazás', 73: 'Mérsékelt havazás', 75: 'Erős havazás', 80: 'Enyhe zápor', 81: 'Mérsékelt zápor', 82: 'Erős zápor', 95: 'Zivatar' };
     const wmoIconMap = { '0': 'fa-sun', '1': 'fa-cloud-sun', '2': 'fa-cloud', '3': 'fa-cloud', '45': 'fa-smog', '48': 'fa-smog', '51': 'fa-cloud-rain', '53': 'fa-cloud-rain', '55': 'fa-cloud-rain', '61': 'fa-cloud-showers-heavy', '63': 'fa-cloud-showers-heavy', '65': 'fa-cloud-showers-heavy', '71': 'fa-snowflake', '73': 'fa-snowflake', '75': 'fa-snowflake', '80': 'fa-cloud-showers-heavy', '81': 'fa-cloud-showers-heavy', '82': 'fa-cloud-showers-heavy', '95': 'fa-cloud-bolt' };
     
@@ -108,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // --- 4. Fánk-kerék Kezelése (Változatlan) ---
+    // --- 4. Fánk-kerék Kezelése ---
     const defaultLinks = [
         { label: "Google", url: "https://google.com" },
         { label: "YouTube", url: "https://youtube.com" },
@@ -176,7 +204,7 @@ document.addEventListener('DOMContentLoaded', () => {
         renderWheel();
     }
     
-    // --- 5. Modal Eseménykezelők (Változatlan) ---
+    // --- 5. Modal Eseménykezelők ---
     addLinkBtn.addEventListener('click', () => {
         modalLabelInput.value = '';
         modalUrlInput.value = '';
@@ -206,35 +234,29 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     });
 
-    // --- 6. Indítás (Változatlan) ---
+    // --- 6. Indítás ---
     loadWeatherOnStart();
     loadLinks();
 
-    // --- 7. ÚJ: Téma Kezelése ---
-    
-    // Eseményfigyelő a kapcsolóra
+    // --- 7. Téma Kezelése ---
     themeToggle.addEventListener('change', () => {
         if (themeToggle.checked) {
-            // Sötét mód bekapcsolása
             document.body.classList.add('dark-mode');
             localStorage.setItem('theme', 'dark');
         } else {
-            // Világos mód (alapértelmezett)
             document.body.classList.remove('dark-mode');
             localStorage.setItem('theme', 'light');
         }
     });
 
-    // Téma betöltése oldal indulásakor
     function loadTheme() {
         const savedTheme = localStorage.getItem('theme');
         if (savedTheme === 'dark') {
             document.body.classList.add('dark-mode');
             themeToggle.checked = true;
         }
-        // Ha 'light' vagy null, nem csinálunk semmit, mert az az alapértelmezett
     }
     
-    loadTheme(); // Meghívjuk az új funkciót is
+    loadTheme();
 
 });
