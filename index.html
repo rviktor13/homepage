@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Személyes Kezdőlap</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+</head>
+<body>
+
+    <div class="top-container">
+        <div class="top-left-cluster">
+            <div id="clock-container">00:00:00</div>
+            
+            <div id="weather-container">
+                <p id="weather-text">Időjárás töltése...</p>
+            </div>
+        </div>
+        <div id="settings-container">
+            <input type="text" id="bg-url-input" placeholder="Háttérkép URL-je...">
+            <button id="bg-set-button">Beállít</button>
+        </div>
+    </div>
+
+    <div class="main-container">
+        <div id="search-container">
+            <input type="text" id="search-input" placeholder="Keress a Google-ban...">
+            <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
+        </div>
+
+        <div class="wheel-container">
+            <div class="wheel">
+                <div class="wheel-center"></div>
+                <a href="https://google.com" target="_blank" class="wheel-item" style="--i:0;">
+                    <i class="fa-brands fa-google"></i>
+                </a>
+                <a href="https://youtube.com" target="_blank" class="wheel-item" style="--i:1;">
+                    <i class="fa-brands fa-youtube"></i>
+                </a>
+                <a href="https://facebook.com" target="_blank" class="wheel-item" style="--i:2;">
+                    <i class="fa-brands fa-facebook"></i>
+                </a>
+                <a href="https://reddit.com" target="_blank" class="wheel-item" style="--i:3;">
+                    <i class="fa-brands fa-reddit-alien"></i>
+                </a>
+                <a href="https://github.com" target="_blank" class="wheel-item" style="--i:4;">
+                    <i class="fa-brands fa-github"></i>
+                </a>
+                <a href="https://wikipedia.org" target="_blank" class="wheel-item" style="--i:5;">
+                    <i class="fa-brands fa-wikipedia-w"></i>
+                </a>
+                <a href="https://twitch.tv" target="_blank" class="wheel-item" style="--i:6;">
+                    <i class="fa-brands fa-twitch"></i>
+                </a>
+                <a href="https://spotify.com" target="_blank" class="wheel-item" style="--i:7;">
+                    <i class="fa-brands fa-spotify"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

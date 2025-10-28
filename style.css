@@ -1,0 +1,179 @@
+/* Alapbeállítások és a háttérkép */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+    background-color: #2c3e50;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    color: white;
+    min-height: 100vh;
+    box-sizing: border-box;
+    transition: background-image 0.5s ease;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Felső sáv az időjárásnak és a beállításoknak */
+.top-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    width: 100%;
+}
+
+/* ÚJ: Bal oldali csoport (óra és időjárás) */
+.top-left-cluster {
+    display: flex;
+    gap: 15px; /* Kis térköz az óra és az időjárás között */
+    align-items: center; /* Függőlegesen középre igazítja őket */
+}
+
+/* ÚJ: Óra stílusa */
+#clock-container {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1.4em; /* Kicsit nagyobb, mint az időjárás */
+    font-weight: bold;
+    text-shadow: 1px 1px 2px black;
+    /* Monospace betűtípus, hogy a számok ne "ugráljanak" */
+    font-family: 'Courier New', Courier, monospace;
+}
+
+#weather-container {
+    background: rgba(0, 0, 0, 0.5);
+    padding: 10px 15px;
+    border-radius: 10px;
+    font-size: 1.1em;
+    text-shadow: 1px 1px 2px black;
+    /* Beállítunk egy maximális szélességet, hogy a hosszú szöveg ne rontsa el az elrendezést */
+    max-width: 350px;
+}
+
+/* MÓDOSÍTVA: A <p> tag alap margóját levesszük */
+#weather-container p {
+    margin: 0;
+    /* Hosszú szöveg levágása ...-al */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+#settings-container input {
+    padding: 8px;
+    border: none;
+    border-radius: 5px 0 0 5px;
+    outline: none;
+}
+
+#settings-container button {
+    padding: 8px 12px;
+    border: none;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+    border-radius: 0 5px 5px 0;
+}
+
+/* Középső tartalom (kereső + kerék) */
+.main-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* ... a CSS többi része változatlan ... */
+
+/* Keresőmező */
+#search-container {
+    margin-bottom: 40px;
+    display: flex;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+}
+
+#search-input {
+    width: 400px;
+    padding: 15px 20px;
+    font-size: 1.1em;
+    border: none;
+    border-radius: 30px 0 0 30px;
+    outline: none;
+}
+
+#search-button {
+    padding: 15px 20px;
+    border: none;
+    background: white;
+    cursor: pointer;
+    border-radius: 0 30px 30px 0;
+    font-size: 1.1em;
+    color: #555;
+}
+
+/* A FÁNK-KERÉK */
+.wheel-container {
+    position: relative;
+    width: 350px;
+    height: 350px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.wheel {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+}
+
+.wheel-center {
+    position: absolute;
+    width: 150px;
+    height: 150px;
+    background: rgba(0, 0, 0, 0.4);
+    border-radius: 50%;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    pointer-events: none;
+}
+
+.wheel-item {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 60px;
+    height: 60px;
+    margin: -30px;
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 50%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease, background 0.3s;
+    transform: rotate(calc(var(--i) * 45deg)) translateY(-175px) rotate(calc(var(--i) * -45deg));
+}
+
+.wheel-item i {
+    font-size: 2em;
+    color: #333;
+    transition: transform 0.3s ease;
+}
+
+.wheel-item:hover {
+    background: white;
+    transform: rotate(calc(var(--i) * 45deg)) translateY(-175px) rotate(calc(var(--i) * -45deg)) scale(1.1);
+}
+
+.wheel-item:hover i {
+    transform: scale(1.2);
+}
