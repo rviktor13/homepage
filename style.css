@@ -70,6 +70,7 @@ body {
     display: flex;
     gap: 15px;
     align-items: center;
+    flex-wrap: wrap; /* ÚJ */
 }
 
 /* Időjárás (Matt üveg) */
@@ -172,11 +173,10 @@ input:checked+.slider:before {
 }
 
 /* Beállítások Gombjai */
-#settings-container {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
+#settings-container { 
+    display: flex; 
+    flex-direction: column; 
+    align-items: flex-end; 
 }
 
 .setting-group {
@@ -205,6 +205,45 @@ input:checked+.slider:before {
 #settings-container button:hover {
     transform: scale(1.05);
     filter: brightness(1.1);
+}
+
+/* ÚJ: A "Beállítások" gomb stílusa */
+#settings-toggle {
+    /* Lemásoljuk a "matt üveg" stílust */
+    background: var(--glass-bg);
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-shadow: 1px 1px 2px black;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 15px var(--glass-shadow);
+
+    /* Gomb tulajdonságok */
+    cursor: pointer;
+    user-select: none; /* Ne lehessen kijelölni a szöveget */
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    transition: filter 0.2s ease;
+}
+
+#settings-toggle:hover {
+    filter: brightness(1.2);
+}
+
+/* ÚJ: A lenyíló tartalom konténere */
+#settings-content {
+    display: none; /* Alapból rejtett */
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 10px; /* Kis távolság a gomb és a tartalom között */
+}
+
+/* ÚJ: Amikor megkapja a .open osztályt a JS-től, láthatóvá válik */
+#settings-content.open {
+    display: flex;
 }
 
 /* Fő tartalom (Középső) */
@@ -329,22 +368,24 @@ input:checked+.slider:before {
 
 #add-link-btn {
     pointer-events: all;
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
+    background: none; /* MÓDOSÍTÁS: Háttér eltávolítása */
     border: none;
-    background: var(--button-primary-bg);
-    color: white;
-    font-size: 2em;
-    line-height: 38px;
+    color: var(--primary-text); /* MÓDOSÍTÁS: Szín igazítása a témához */
+    font-size: 2.5em; /* MÓDOSÍTÁS: Nagyobb, hogy jobban látszódjon */
+    line-height: 1; /* MÓDOSÍTÁS: Visszaállítás */
     cursor: pointer;
-    margin-top: 10px;
-    transition: background 0.3s, transform 0.3s ease;
+    margin-top: 0; /* MÓDOSÍTÁS: Felső margó törlése a jobb középre igazításhoz */
+    transition: transform 0.3s ease, color 0.3s ease; /* MÓDOSÍTÁS: Átmenet frissítése */
+    
+    /* MÓDOSÍTÁS: Eltávolítjuk a méretkorlátokat, hogy a flexbox középre tegye */
+    width: auto;
+    height: auto;
 }
 
-#add-link-btn:hover {
-    background: #2980b9;
-    transform: scale(1.1);
+#add-link-btn:hover { 
+    background: none; /* MÓDOSÍTÁS: Biztosítjuk, hogy hover-en se legyen háttér */
+    transform: scale(1.1); 
+    color: #3498db; /* MÓDOSÍTÁS: Hover szín (az eredeti kék) */
 }
 
 /* Kerék elemei */
@@ -559,7 +600,21 @@ body.dark-mode .wheel-item:hover {
 
     /* (Az 'overflow: hidden' és 'text-overflow: ellipsis' már be van állítva a #weather-container p-re) */
 
+    .settings-text {
+        display: none;
+    }
+
+    /* ÚJ: A gombot kicsit jobban négyzetesítjük */
+    #settings-toggle {
+        padding: 10px 12px;
+    }
+
+    /* MÓDOSÍTVA: A lenyíló tartalom is legyen középre igazítva */
     #settings-container {
+        align-items: center;
+    }
+
+    #settings-content {
         align-items: center;
     }
 

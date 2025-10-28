@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="hu">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,6 +9,7 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
+
 <body>
 
     <div id="background-overlay"></div>
@@ -25,22 +27,32 @@
         </div>
 
         <div id="settings-container">
-            <div class="setting-group">
-                <input type="text" id="city-input" placeholder="Település neve...">
-                <button id="city-set-button">Beállít</button>
+
+            <div id="settings-toggle">
+                <span class="settings-text">Beállítások </span>
+                <i class="fa-solid fa-gear"></i>
             </div>
-            <div class="setting-group">
-                <input type="text" id="bg-url-input" placeholder="Háttérkép URL-je...">
-                <button id="bg-set-button">Beállít</button>
+
+            <div id="settings-content">
+                <div class="setting-group">
+                    <input type="text" id="city-input" placeholder="Település neve...">
+                    <button id="city-set-button">Beállít</button>
+                </div>
+                <div class="setting-group">
+                    <input type="text" id="bg-url-input" placeholder="Háttérkép URL-je...">
+                    <button id="bg-set-button">Beállít</button>
+                </div>
+
+                <div class="setting-group">
+                    <label for="bg-file-input" class="file-upload-label">
+                        Feltöltés gépemről
+                    </label>
+                    <input type="file" id="bg-file-input" accept="image/*">
+                </div>
             </div>
-            
-            <div class="setting-group">
-                <label for="bg-file-input" class="file-upload-label">
-                    Feltöltés gépemről
-                </label>
-                <input type="file" id="bg-file-input" accept="image/*">
-            </div>
+
         </div>
+    </div>
     </div>
 
     <div class="main-container">
@@ -77,4 +89,5 @@
 
     <script src="script.js"></script>
 </body>
+
 </html>

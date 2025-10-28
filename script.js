@@ -20,6 +20,10 @@ document.addEventListener('DOMContentLoaded', () => {
     const cancelLinkBtn = document.getElementById('cancel-link-btn');
     const themeToggle = document.getElementById('theme-toggle');
     const bgFileInput = document.getElementById('bg-file-input'); // Fájlfeltöltő input
+    
+    // Beállítások kapcsoló
+    const settingsToggle = document.getElementById('settings-toggle');
+    const settingsContent = document.getElementById('settings-content');
 
     let wheelLinks = [];
 
@@ -258,5 +262,13 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     
     loadTheme();
+    
+    // --- 8. Beállítások Menü Kezelése ---
+    
+    settingsToggle.addEventListener('click', () => {
+        // A 'classList.toggle' hozzáadja az 'open' osztályt, ha nincs ott,
+        // és elveszi, ha ott van.
+        settingsContent.classList.toggle('open');
+    });
 
 });
