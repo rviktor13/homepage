@@ -402,7 +402,17 @@ body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
         display: none; /* Hover szöveg elrejtése */
     }
     #add-link-btn {
-        margin-top: 0; /* Gomb középre igazítása (felesleges margó törlése) */
+        margin-top: 0; /* Gomb középre igazítása */
+        
+        /* ÚJ: Háttér és keret eltávolítása */
+        background: none;
+        border: none;
+        
+        /* ÚJ: A '+' jel színe igazodjon a szöveg színéhez */
+        color: var(--primary-text);
+        
+        /* ÚJ: Ne legyen árnyéka */
+        box-shadow: none;
     }
 
     /* A fánk-kerék lekicsinyítése */
@@ -415,4 +425,5 @@ body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
     .modal-content {
         width: 95%;
     }
+
 }
