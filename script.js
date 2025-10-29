@@ -24,6 +24,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // Beállítások kapcsoló
     const settingsToggle = document.getElementById('settings-toggle');
     const settingsContent = document.getElementById('settings-content');
+    
+    // Jegyzet widget
+    const notesTextarea = document.getElementById('notes-textarea');
 
     let wheelLinks = [];
 
@@ -238,11 +241,7 @@ document.addEventListener('DOMContentLoaded', () => {
         modal.style.display = 'none';
     });
 
-    // --- 6. Indítás ---
-    loadWeatherOnStart();
-    loadLinks();
-
-    // --- 7. Téma Kezelése ---
+    // --- 6. Téma Kezelése ---
     themeToggle.addEventListener('change', () => {
         if (themeToggle.checked) {
             document.body.classList.add('dark-mode');
@@ -261,14 +260,34 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
     
-    loadTheme();
-    
-    // --- 8. Beállítások Menü Kezelése ---
-    
+    // --- 7. Beállítások Menü Kezelése ---
     settingsToggle.addEventListener('click', () => {
-        // A 'classList.toggle' hozzáadja az 'open' osztályt, ha nincs ott,
-        // és elveszi, ha ott van.
         settingsContent.classList.toggle('open');
     });
+
+    // --- 8. Jegyzet Widget Kezelése ---
+    function saveNotes() {
+        if (notesTextarea) {
+            localStorage.setItem('userNotes', notesTextarea.value);
+        }
+    }
+
+    function loadNotes() {
+        if (notesTextarea) {
+            const savedNotes = localStorage.getItem('userNotes');
+            if (savedNotes) {
+                notesTextarea.value = savedNotes;
+            }
+        }
+    }
+    if (notesTextarea) {
+        notesTextarea.addEventListener('keyup', saveNotes);
+    }
+    
+    // --- 9. Indítás ---
+    loadWeatherOnStart();
+    loadLinks();
+    loadTheme();
+    loadNotes();
 
 });

@@ -1,7 +1,6 @@
 /* --- Szín Változók Definíciója (Világos Téma) --- */
 :root {
-    --bg-color: #2c3e50;
-    /* Alap háttér, ha nincs kép */
+    --bg-color: #2c3e50; /* Alap háttér, ha nincs kép */
     --primary-text: white;
     --dark-text: #333;
     --glass-bg: rgba(0, 0, 0, 0.25);
@@ -17,8 +16,7 @@
     --button-primary-bg: #3498db;
     --button-secondary-bg: #ecf0f1;
     --button-danger-bg: #e74c3c;
-    --bg-overlay: rgba(0, 0, 0, 0.15);
-    /* Világos mód sötétítés (15%) */
+    --bg-overlay: rgba(0, 0, 0, 0.15); /* Világos mód sötétítés (15%) */
 }
 
 /* --- Sötét Téma felülírása --- */
@@ -36,8 +34,7 @@ body.dark-mode {
     --input-bg: #444;
     --input-border: #555;
     --button-secondary-bg: #555;
-    --bg-overlay: rgba(0, 0, 0, 0.35);
-    /* Sötét mód sötétítés (35%) */
+    --bg-overlay: rgba(0, 0, 0, 0.35); /* Sötét mód sötétítés (35%) */
 }
 
 
@@ -70,7 +67,7 @@ body {
     display: flex;
     gap: 15px;
     align-items: center;
-    flex-wrap: wrap; /* ÚJ */
+    flex-wrap: wrap; /* Tördelés mobilon */
 }
 
 /* Időjárás (Matt üveg) */
@@ -83,27 +80,15 @@ body {
     border: 1px solid var(--glass-border);
     box-shadow: 0 4px 15px var(--glass-shadow);
     font-size: 1.1em;
-    font-weight: normal;
-    font-family: Arial, sans-serif;
+    font-weight: normal; 
+    font-family: Arial, sans-serif; 
     display: flex;
     align-items: center;
     gap: 10px;
     max-width: 450px;
 }
-
-#weather-icon {
-    font-size: 1.6em;
-    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-    width: 28px;
-    text-align: center;
-}
-
-#weather-container p {
-    margin: 0;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-}
+#weather-icon { font-size: 1.6em; text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8); width: 28px; text-align: center; }
+#weather-container p { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* Sötét Mód Kapcsoló */
 .theme-switch-wrapper {
@@ -112,13 +97,7 @@ body {
     width: 50px;
     height: 28px;
 }
-
-.theme-switch-wrapper input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
+.theme-switch-wrapper input { opacity: 0; width: 0; height: 0; }
 .slider {
     position: absolute;
     cursor: pointer;
@@ -129,11 +108,9 @@ body {
     background-color: #ccc;
     transition: .4s;
 }
-
 .slider:before {
     position: absolute;
-    content: '\f185';
-    /* Nap ikon */
+    content: '\f185'; /* Nap ikon */
     font-family: "Font Awesome 6 Free";
     font-weight: 900;
     color: #f39c12;
@@ -148,41 +125,57 @@ body {
     justify-content: center;
     font-size: 14px;
 }
-
-input:checked+.slider {
-    background-color: var(--button-primary-bg);
-}
-
-input:focus+.slider {
-    box-shadow: 0 0 1px var(--button-primary-bg);
-}
-
-input:checked+.slider:before {
+input:checked + .slider { background-color: var(--button-primary-bg); }
+input:focus + .slider { box-shadow: 0 0 1px var(--button-primary-bg); }
+input:checked + .slider:before {
     transform: translateX(22px);
-    content: '\f186';
-    /* Hold ikon */
+    content: '\f186'; /* Hold ikon */
     color: var(--button-primary-bg);
 }
+.slider.round { border-radius: 34px; }
+.slider.round:before { border-radius: 50%; }
 
-.slider.round {
-    border-radius: 34px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
-}
-
-/* Beállítások Gombjai */
+/* Beállítások Konténer */
 #settings-container { 
     display: flex; 
     flex-direction: column; 
     align-items: flex-end; 
 }
 
-.setting-group {
+/* "Beállítások" gomb stílusa */
+#settings-toggle {
+    background: var(--glass-bg);
+    padding: 10px 15px;
+    border-radius: 12px;
+    text-shadow: 1px 1px 2px black;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 15px var(--glass-shadow);
+    cursor: pointer;
+    user-select: none;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-weight: bold;
+    transition: filter 0.2s ease;
+}
+#settings-toggle:hover {
+    filter: brightness(1.2);
+}
+
+/* Lenyíló tartalom konténere */
+#settings-content {
+    display: none; /* Alapból rejtett */
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 10px;
+    margin-top: 10px;
+}
+#settings-content.open {
     display: flex;
 }
 
+.setting-group { display: flex; }
 #settings-container input {
     padding: 8px;
     border: none;
@@ -191,7 +184,6 @@ input:checked+.slider:before {
     background: var(--input-bg);
     color: var(--dark-text);
 }
-
 #settings-container button {
     padding: 8px 12px;
     border: none;
@@ -201,60 +193,31 @@ input:checked+.slider:before {
     border-radius: 0 5px 5px 0;
     transition: transform 0.2s ease, filter 0.2s ease;
 }
+#settings-container button:hover { transform: scale(1.05); filter: brightness(1.1); }
 
-#settings-container button:hover {
+/* Fájlfeltöltő gomb stílusai */
+#bg-file-input {
+    display: none;
+}
+.file-upload-label {
+    padding: 8px 12px;
+    border: none;
+    background: var(--button-primary-bg);
+    color: white;
+    cursor: pointer;
+    border-radius: 5px;
+    transition: transform 0.2s ease, filter 0.2s ease;
+    font-family: Arial, sans-serif;
+    font-size: 13.3333px;
+    line-height: normal;
+}
+.file-upload-label:hover {
     transform: scale(1.05);
     filter: brightness(1.1);
 }
 
-/* ÚJ: A "Beállítások" gomb stílusa */
-#settings-toggle {
-    /* Lemásoljuk a "matt üveg" stílust */
-    background: var(--glass-bg);
-    padding: 10px 15px;
-    border-radius: 12px;
-    text-shadow: 1px 1px 2px black;
-    backdrop-filter: blur(10px);
-    border: 1px solid var(--glass-border);
-    box-shadow: 0 4px 15px var(--glass-shadow);
-
-    /* Gomb tulajdonságok */
-    cursor: pointer;
-    user-select: none; /* Ne lehessen kijelölni a szöveget */
-    display: flex;
-    align-items: center;
-    gap: 8px;
-    font-weight: bold;
-    transition: filter 0.2s ease;
-}
-
-#settings-toggle:hover {
-    filter: brightness(1.2);
-}
-
-/* ÚJ: A lenyíló tartalom konténere */
-#settings-content {
-    display: none; /* Alapból rejtett */
-    flex-direction: column;
-    align-items: flex-end;
-    gap: 10px;
-    margin-top: 10px; /* Kis távolság a gomb és a tartalom között */
-}
-
-/* ÚJ: Amikor megkapja a .open osztályt a JS-től, láthatóvá válik */
-#settings-content.open {
-    display: flex;
-}
-
 /* Fő tartalom (Középső) */
-.main-container {
-    flex-grow: 1;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-}
+.main-container { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; text-align: center; }
 
 /* Óra (Kereső felett) */
 #clock-container {
@@ -268,7 +231,6 @@ input:checked+.slider:before {
     line-height: 1;
     user-select: none;
 }
-
 .clock-seconds {
     font-size: 0.4em;
     opacity: 0.7;
@@ -284,11 +246,7 @@ input:checked+.slider:before {
     border-radius: 30px;
     transition: box-shadow 0.2s ease;
 }
-
-#search-container:focus-within {
-    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), 0 0 0 4px rgba(52, 152, 219, 0.4);
-}
-
+#search-container:focus-within { box-shadow: 0 8px 30px rgba(0, 0, 0, 0.35), 0 0 0 4px rgba(52, 152, 219, 0.4); }
 #search-input {
     width: 400px;
     padding: 15px 20px;
@@ -299,7 +257,6 @@ input:checked+.slider:before {
     background: var(--input-bg);
     color: var(--dark-text);
 }
-
 #search-button {
     padding: 15px 20px;
     border: none;
@@ -310,28 +267,11 @@ input:checked+.slider:before {
     color: #555;
     transition: transform 0.2s ease, filter 0.2s ease;
 }
-
-#search-button:hover {
-    transform: scale(1.05);
-    filter: brightness(0.95);
-}
+#search-button:hover { transform: scale(1.05); filter: brightness(0.95); }
 
 /* Fánk-kerék */
-.wheel-container {
-    position: relative;
-    width: 350px;
-    height: 350px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.wheel {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-}
+.wheel-container { position: relative; width: 350px; height: 350px; display: flex; justify-content: center; align-items: center; }
+.wheel { position: relative; width: 100%; height: 100%; border-radius: 50%; }
 
 /* Kerék közepe */
 .wheel-center {
@@ -354,38 +294,26 @@ input:checked+.slider:before {
     backdrop-filter: blur(10px);
     border: 1px solid var(--glass-border);
 }
+#center-label { font-size: 1.2em; font-weight: bold; text-shadow: 1px 1px 2px black; color: var(--primary-text); height: 30px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
-#center-label {
-    font-size: 1.2em;
-    font-weight: bold;
-    text-shadow: 1px 1px 2px black;
-    color: var(--primary-text);
-    height: 30px;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-}
-
+/* Hozzáadás gomb (háttér nélkül) */
 #add-link-btn {
     pointer-events: all;
-    background: none; /* MÓDOSÍTÁS: Háttér eltávolítása */
+    background: none;
     border: none;
-    color: var(--primary-text); /* MÓDOSÍTÁS: Szín igazítása a témához */
-    font-size: 2.5em; /* MÓDOSÍTÁS: Nagyobb, hogy jobban látszódjon */
-    line-height: 1; /* MÓDOSÍTÁS: Visszaállítás */
+    color: var(--primary-text);
+    font-size: 2.5em;
+    line-height: 1;
     cursor: pointer;
-    margin-top: 0; /* MÓDOSÍTÁS: Felső margó törlése a jobb középre igazításhoz */
-    transition: transform 0.3s ease, color 0.3s ease; /* MÓDOSÍTÁS: Átmenet frissítése */
-    
-    /* MÓDOSÍTÁS: Eltávolítjuk a méretkorlátokat, hogy a flexbox középre tegye */
+    margin-top: 0;
+    transition: transform 0.3s ease, color 0.3s ease;
     width: auto;
     height: auto;
 }
-
 #add-link-btn:hover { 
-    background: none; /* MÓDOSÍTÁS: Biztosítjuk, hogy hover-en se legyen háttér */
+    background: none; 
     transform: scale(1.1); 
-    color: #3498db; /* MÓDOSÍTÁS: Hover szín (az eredeti kék) */
+    color: #3498db;
 }
 
 /* Kerék elemei */
@@ -406,25 +334,16 @@ input:checked+.slider:before {
     transition: transform 0.3s ease, background 0.3s, box-shadow 0.3s ease;
     transform: rotate(calc(var(--i) * var(--angle))) translateY(-175px) rotate(calc(var(--i) * var(--angle) * -1));
 }
-
 .wheel-item:hover {
     background: white;
     transform: rotate(calc(var(--i) * var(--angle))) translateY(-175px) rotate(calc(var(--i) * var(--angle) * -1)) scale(1.1);
     z-index: 10;
     box-shadow: 0 8px 20px var(--wheel-item-hover-shadow);
 }
+body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
+.wheel-item img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
 
-body.dark-mode .wheel-item:hover {
-    background: rgba(70, 70, 70, 1);
-}
-
-.wheel-item img {
-    width: 40px;
-    height: 40px;
-    border-radius: 8px;
-    object-fit: cover;
-}
-
+/* Törlés gomb (Flexbox-szal középre) */
 .remove-link-btn {
     position: absolute;
     top: -5px;
@@ -441,22 +360,14 @@ body.dark-mode .wheel-item:hover {
     opacity: 0;
     transition: opacity 0.2s, transform 0.2s;
     z-index: 11;
-
-    /* MÓDOSÍTVA: Flexbox-szal középre igazítás */
+    /* Flexbox-szal középre igazítás */
     display: flex;
     align-items: center;
     justify-content: center;
-    line-height: 1; /* Visszaállítás */
+    line-height: 1;
 }
-
-.wheel-item:hover .remove-link-btn {
-    opacity: 1;
-}
-
-.remove-link-btn:hover {
-    background: #c0392b;
-    transform: scale(1.1);
-}
+.wheel-item:hover .remove-link-btn { opacity: 1; }
+.remove-link-btn:hover { background: #c0392b; transform: scale(1.1); }
 
 /* Modal (Felugró ablak) */
 .modal-overlay {
@@ -472,7 +383,6 @@ body.dark-mode .wheel-item:hover {
     align-items: center;
     backdrop-filter: blur(5px);
 }
-
 .modal-content {
     background: var(--modal-bg);
     color: var(--dark-text);
@@ -482,11 +392,7 @@ body.dark-mode .wheel-item:hover {
     max-width: 500px;
     box-shadow: 0 10px 40px var(--modal-shadow);
 }
-
-.modal-content h3 {
-    margin-top: 0;
-}
-
+.modal-content h3 { margin-top: 0; }
 .modal-content input {
     width: 100%;
     padding: 10px;
@@ -497,41 +403,12 @@ body.dark-mode .wheel-item:hover {
     background: var(--input-bg);
     color: var(--dark-text);
 }
-
-.modal-buttons {
-    margin-top: 20px;
-    display: flex;
-    justify-content: flex-end;
-    gap: 10px;
-}
-
-.modal-buttons button {
-    padding: 10px 15px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    font-weight: bold;
-    transition: transform 0.2s ease, filter 0.2s ease;
-}
-
-.modal-buttons button:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-}
-
-#save-link-btn {
-    background: var(--button-primary-bg);
-    color: white;
-}
-
-#cancel-link-btn {
-    background: var(--button-secondary-bg);
-    color: var(--dark-text);
-}
-
-#cancel-link-btn:hover {
-    filter: brightness(0.95);
-}
+.modal-buttons { margin-top: 20px; display: flex; justify-content: flex-end; gap: 10px; }
+.modal-buttons button { padding: 10px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; transition: transform 0.2s ease, filter 0.2s ease; }
+.modal-buttons button:hover { transform: scale(1.05); filter: brightness(1.1); }
+#save-link-btn { background: var(--button-primary-bg); color: white; }
+#cancel-link-btn { background: var(--button-secondary-bg); color: var(--dark-text); }
+#cancel-link-btn:hover { filter: brightness(0.95); }
 
 /* Háttér sötétítő réteg */
 #background-overlay {
@@ -545,37 +422,68 @@ body.dark-mode .wheel-item:hover {
     transition: background 0.4s ease;
 }
 
-/* --- ÚJ: Fájlfeltöltő gomb stílusai --- */
-
-/* Elrejtjük az alapértelmezett, csúnya input gombot */
-#bg-file-input {
-    display: none;
+/* Widget Stílusok (Jegyzet és Zene) */
+.widget {
+    background: var(--glass-bg);
+    padding: 15px;
+    border-radius: 12px;
+    backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border);
+    box-shadow: 0 4px 15px var(--glass-shadow);
+    position: fixed;
+    bottom: 20px;
+    width: 300px;
+    z-index: 5;
 }
-
-/* A "label"-t úgy alakítjuk, hogy gombnak nézzen ki */
-.file-upload-label {
-    /* Lemásoljuk a többi gomb stílusát */
-    padding: 8px 12px;
+.widget h3 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    color: var(--primary-text);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    user-select: none;
+}
+/* Jegyzet Widget (Bal alsó) */
+#notes-widget {
+    left: 20px;
+    height: 200px;
+    display: flex;
+    flex-direction: column;
+}
+#notes-textarea {
+    flex-grow: 1;
+    background: transparent;
     border: none;
-    background: var(--button-primary-bg);
-    color: white;
-    cursor: pointer;
-    border-radius: 5px; /* Ez most teljesen kerek, mert egyedül áll */
-    transition: transform 0.2s ease, filter 0.2s ease;
-    
-    /* Hogy a mérete és betűtípusa egyezzen a többivel */
+    outline: none;
+    color: var(--primary-text);
     font-family: Arial, sans-serif;
-    font-size: 13.3333px; /* Böngésző alapértelmezett gomb betűmérete */
-    line-height: normal;
+    font-size: 0.95em;
+    resize: none;
+    padding: 5px;
+}
+#notes-textarea::-webkit-scrollbar { width: 8px; }
+#notes-textarea::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+#notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+
+
+@media (max-width: 1100px) {
+    #notes-widget {
+        display: flex; /* Láthatóvá tesszük a tartalom részeként */
+        position: relative; /* Kikapcsoljuk a "fixed" viselkedést */
+        left: auto;
+        bottom: auto;
+        width: 90%; /* Szélesség beállítása */
+        max-width: 700px; /* De ne legyen túl széles tableten */
+        height: 150px;
+        /* Automatikus margóval középre és távolság a keréktől */
+        margin: 40px auto 0 auto; 
+    }
 }
 
-.file-upload-label:hover {
-    transform: scale(1.05);
-    filter: brightness(1.1);
-}
-
-
-/* --- MÓDOSÍTOTT Reszponzív Stílusok (Mobil nézet) --- */
+/* --- Reszponzív Stílusok (Mobil nézet) --- */
 @media (max-width: 768px) {
     body {
         padding: 10px;
@@ -588,47 +496,37 @@ body.dark-mode .wheel-item:hover {
         gap: 20px;
     }
 
-    /* ÚJ: Időjárás lerövidítése */
+    /* Időjárás lerövidítése */
     #weather-container {
         max-width: 220px;
-        /* Kisebb konténer, ami levágja a szöveget */
         padding: 8px 12px;
-        /* Kisebb padding */
         font-size: 1.0em;
-        /* Kisebb betűméret */
     }
 
-    /* (Az 'overflow: hidden' és 'text-overflow: ellipsis' már be van állítva a #weather-container p-re) */
-
-    .settings-text {
-        display: none;
-    }
-
-    /* ÚJ: A gombot kicsit jobban négyzetesítjük */
-    #settings-toggle {
-        padding: 10px 12px;
-    }
-
-    /* MÓDOSÍTVA: A lenyíló tartalom is legyen középre igazítva */
+    /* Beállítások menü középre */
     #settings-container {
         align-items: center;
     }
-
     #settings-content {
         align-items: center;
+    }
+
+    /* Beállítások szöveg elrejtése */
+    .settings-text {
+        display: none;
+    }
+    #settings-toggle {
+        padding: 10px 12px;
     }
 
     /* Az óra kisebb lesz ÉS a másodperc elrejtése */
     #clock-container {
         font-size: 4.0rem;
-        /* Kisebb óra */
         margin-top: 10px;
         margin-bottom: 10px;
     }
-
     .clock-seconds {
         display: none;
-        /* Másodperc elrejtése */
     }
 
     /* A kereső 100% széles lesz */
@@ -636,41 +534,37 @@ body.dark-mode .wheel-item:hover {
         width: 95%;
         margin-bottom: 40px;
     }
-
     #search-input {
         width: 100%;
     }
 
-    /* ÚJ: Fánk közepének módosítása */
+    /* Fánk közepének módosítása */
     #center-label {
         display: none;
-        /* Hover szöveg elrejtése */
-    }
-
-    #add-link-btn {
-        margin-top: 0;
-        background: none;
-        border: none;
-        color: var(--primary-text);
-        box-shadow: none;
-
-        /* MÓDOSÍTÁS: Visszaállítjuk az örökölt méreteket, hogy tényleg középen legyen */
-        width: auto;
-        height: auto;
-        line-height: 1;
-        /* Visszaállítja az örökölt 38px-t */
-        font-size: 2.5em;
-        /* Kicsit megnöveljük, hogy jobban látszódjon */
     }
 
     /* A fánk-kerék lekicsinyítése */
     .wheel-container {
         transform: scale(0.8);
-        margin-top: -30px;
+        margin-top: -30px; 
         margin-bottom: -30px;
     }
 
     .modal-content {
         width: 95%;
+    }
+
+    /* Widgetek elrejtése mobilon */
+    .widget {
+        display: none;
+    }
+    #notes-widget {
+        display: flex; /* De a jegyzetet láthatóvá tesszük */
+        position: relative; /* Visszaállítjuk a fixed pozíciót */
+        left: auto;
+        bottom: auto;
+        width: 90%; /* Illeszkedik a szélességhez */
+        height: 150px; /* Kisebb magasság */
+        margin-top: 40px; /* Távolság a fánk-kerék után */
     }
 }
