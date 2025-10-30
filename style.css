@@ -342,6 +342,23 @@ input:checked + .slider:before {
 }
 body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
 .wheel-item img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
+.wheel-item-letter {
+    width: 40px;
+    height: 40px;
+    border-radius: 8px; /* Ugyanaz, mint az img-nél */
+    
+    /* Háttér és szöveg a CSS változókból */
+    background-color: var(--button-secondary-bg); 
+    color: var(--dark-text);
+    
+    /* Betű középre igazítása */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.3em;
+    font-weight: bold;
+    user-select: none;
+}
 
 /* Törlés gomb (Flexbox-szal középre) */
 .remove-link-btn {

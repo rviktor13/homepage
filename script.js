@@ -19,20 +19,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const saveLinkBtn = document.getElementById('save-link-btn');
     const cancelLinkBtn = document.getElementById('cancel-link-btn');
     const themeToggle = document.getElementById('theme-toggle');
-    const bgFileInput = document.getElementById('bg-file-input'); // Fájlfeltöltő input
-    
-    // Beállítások kapcsoló
+    const bgFileInput = document.getElementById('bg-file-input');
     const settingsToggle = document.getElementById('settings-toggle');
     const settingsContent = document.getElementById('settings-content');
-    
-    // Jegyzet widget
     const notesTextarea = document.getElementById('notes-textarea');
 
     let wheelLinks = [];
 
     // --- 2. Óra, Háttérkép, Kereső ---
 
-    // Óra funkció (másodpercekkel külön)
     function updateClock() {
         const now = new Date();
         const hours = String(now.getHours()).padStart(2, '0');
@@ -45,16 +40,14 @@ document.addEventListener('DOMContentLoaded', () => {
     updateClock();
     setInterval(updateClock, 1000);
 
-    // Mentett háttérkép betöltése (URL vagy Data URL)
     const savedBg = localStorage.getItem('backgroundImageUrl');
     if (savedBg) {
         document.body.style.backgroundImage = `url(${savedBg})`;
-        if (savedBg.startsWith('http')) { // Csak akkor töltjük be az inputba, ha URL
+        if (savedBg.startsWith('http')) {
             bgUrlInput.value = savedBg;
         }
     }
 
-    // Háttérkép beállítása URL-ből
     bgSetButton.addEventListener('click', () => {
         const newBgUrl = bgUrlInput.value;
         if (newBgUrl) {
@@ -63,7 +56,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Háttérkép beállítása fájlból
     bgFileInput.addEventListener('change', (event) => {
         const file = event.target.files[0];
         if (file) {
@@ -85,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    // Kereső
     function performSearch() {
         const query = searchInput.value;
         if (query) window.open(`https://www.google.com/search?q=${encodeURIComponent(query)}`, '_blank');
@@ -96,7 +87,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // --- 3. Időjárás ---
     const wmoCodesHu = { 0: 'Tiszta ég', 1: 'Többnyire tiszta', 2: 'Részben felhős', 3: 'Borult', 45: 'Köd', 48: 'Deres köd', 51: 'Enyhe szitálás', 53: 'Mérsékelt szitálás', 55: 'Erős szitálás', 61: 'Enyhe eső', 63: 'Mérsékelt eső', 65: 'Erős eső', 71: 'Enyhe havazás', 73: 'Mérsékelt havazás', 75: 'Erős havazás', 80: 'Enyhe zápor', 81: 'Mérsékelt zápor', 82: 'Erős zápor', 95: 'Zivatar' };
     const wmoIconMap = { '0': 'fa-sun', '1': 'fa-cloud-sun', '2': 'fa-cloud', '3': 'fa-cloud', '45': 'fa-smog', '48': 'fa-smog', '51': 'fa-cloud-rain', '53': 'fa-cloud-rain', '55': 'fa-cloud-rain', '61': 'fa-cloud-showers-heavy', '63': 'fa-cloud-showers-heavy', '65': 'fa-cloud-showers-heavy', '71': 'fa-snowflake', '73': 'fa-snowflake', '75': 'fa-snowflake', '80': 'fa-cloud-showers-heavy', '81': 'fa-cloud-showers-heavy', '82': 'fa-cloud-showers-heavy', '95': 'fa-cloud-bolt' };
-    
+
     async function fetchWeather(cityName) {
         weatherText.textContent = 'Adatok lekérése...';
         weatherIcon.className = 'fa-solid fa-spinner fa-spin';
@@ -156,12 +147,18 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem('wheelLinks', JSON.stringify(wheelLinks));
         renderWheel();
     }
+
     function renderWheel() {
+        // 1. Töröljük a régi elemeket
         const oldItems = wheel.querySelectorAll('.wheel-item');
         oldItems.forEach(item => item.remove());
+
         const numItems = wheelLinks.length;
         if (numItems === 0) return;
+
         const angle = 360 / numItems;
+
+        // 2. Létrehozzuk az új elemeket
         wheelLinks.forEach((link, i) => {
             const a = document.createElement('a');
             a.className = 'wheel-item';
@@ -170,19 +167,40 @@ document.addEventListener('DOMContentLoaded', () => {
             a.dataset.label = link.label;
             a.style.setProperty('--i', i);
             a.style.setProperty('--angle', `${angle}deg`);
+
+            // Favicon kép létrehozása
             const img = document.createElement('img');
             try {
                 const domain = new URL(link.url).hostname;
                 img.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
             } catch (e) {
-                img.src = '';
+                img.src = ''; // Hiba esetén üres src, ami beindítja az onerror-t
             }
-            img.onerror = () => { img.src = 'https://via.placeholder.com/40/ccc/000?text=?'; };
-            a.appendChild(img);
+
+            // --- ITT A HELYES HIBAKEZELŐ ---
+            img.onerror = () => {
+                // Hozz létre egy új div-et a betűnek
+                const letterIcon = document.createElement('div');
+                letterIcon.className = 'wheel-item-letter';
+
+                const firstLetter = link.label ? link.label[0].toUpperCase() : '?';
+                letterIcon.textContent = firstLetter;
+
+                // Egyszerűen rejtsd el a hibás képet...
+                img.style.display = 'none';
+                // ...és add hozzá a betűs ikont (a flexbox középre teszi)
+                a.appendChild(letterIcon);
+            };
+            // --- HIBAKEZELŐ VÉGE ---
+
+            a.appendChild(img); // Először a képet adjuk hozzá
+
+            // Törlés gomb létrehozása
             const removeBtn = document.createElement('button');
             removeBtn.className = 'remove-link-btn';
             removeBtn.innerHTML = '&times;';
             removeBtn.title = `"${link.label}" törlése`;
+
             removeBtn.addEventListener('click', (e) => {
                 e.preventDefault();
                 e.stopPropagation();
@@ -191,16 +209,21 @@ document.addEventListener('DOMContentLoaded', () => {
                     saveLinks();
                 }
             });
-            a.appendChild(removeBtn);
+
+            a.appendChild(removeBtn); // Másodszor a gombot
+
+            // Hover eseménykezelők
             a.addEventListener('mouseenter', () => {
                 centerLabel.textContent = link.label;
             });
             a.addEventListener('mouseleave', () => {
                 centerLabel.textContent = '';
             });
+
             wheel.appendChild(a);
         });
     }
+
     function loadLinks() {
         const savedLinks = localStorage.getItem('wheelLinks');
         if (savedLinks) {
@@ -210,7 +233,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         renderWheel();
     }
-    
+
     // --- 5. Modal Eseménykezelők ---
     addLinkBtn.addEventListener('click', () => {
         modalLabelInput.value = '';
@@ -259,7 +282,7 @@ document.addEventListener('DOMContentLoaded', () => {
             themeToggle.checked = true;
         }
     }
-    
+
     // --- 7. Beállítások Menü Kezelése ---
     settingsToggle.addEventListener('click', () => {
         settingsContent.classList.toggle('open');
@@ -283,7 +306,7 @@ document.addEventListener('DOMContentLoaded', () => {
     if (notesTextarea) {
         notesTextarea.addEventListener('keyup', saveNotes);
     }
-    
+
     // --- 9. Indítás ---
     loadWeatherOnStart();
     loadLinks();
