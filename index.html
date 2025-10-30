@@ -1,6 +1,5 @@
 <!DOCTYPE html>
 <html lang="hu">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,7 +8,6 @@
     <link rel="stylesheet" href="style.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
 </head>
-
 <body>
 
     <div id="background-overlay"></div>
@@ -31,7 +29,7 @@
                 <span class="settings-text">Beállítások </span>
                 <i class="fa-solid fa-gear"></i>
             </div>
-
+            
             <div id="settings-content">
                 <div class="setting-group">
                     <input type="text" id="city-input" placeholder="Település neve...">
@@ -41,21 +39,22 @@
                     <input type="text" id="bg-url-input" placeholder="Háttérkép URL-je...">
                     <button id="bg-set-button">Beállít</button>
                 </div>
-
+                
                 <div class="setting-group">
                     <label for="bg-file-input" class="file-upload-label">
                         Feltöltés gépemről
                     </label>
                     <input type="file" id="bg-file-input" accept="image/*">
                 </div>
-            </div>
+
+                </div>
         </div>
     </div>
 
     <div class="main-container">
 
         <div id="clock-container">00:00:00</div>
-
+        
         <div id="search-container">
             <input type="text" id="search-input" placeholder="Keress a Google-ban...">
             <button id="search-button"><i class="fa-solid fa-magnifying-glass"></i></button>
@@ -69,11 +68,12 @@
                 </div>
             </div>
         </div>
-        <div id="notes-widget" class="widget">
-            <h3><i class="fa-solid fa-note-sticky"></i>Jegyzet</h3>
-            <textarea id="notes-textarea" placeholder="Írj ide bármit..."></textarea>
-        </div>
 
+        <div id="notes-widget" class="widget">
+            <h3><i class="fa-solid fa-list-check"></i>Teendők</h3>
+            <div id="todo-list"></div>
+            <input type="text" id="todo-input" placeholder="Új teendő... (Enter)">
+        </div>
     </div>
 
     <div id="add-link-modal" class="modal-overlay">
@@ -89,9 +89,6 @@
         </div>
     </div>
 
-
-
     <script src="script.js"></script>
 </body>
-
 </html>

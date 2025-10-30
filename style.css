@@ -10,6 +10,7 @@
     --wheel-item-shadow: rgba(0, 0, 0, 0.15);
     --wheel-item-hover-shadow: rgba(0, 0, 0, 0.25);
     --modal-bg: #fff;
+    --todo-check-color: #333;
     --modal-shadow: rgba(0, 0, 0, 0.3);
     --input-bg: #fff;
     --input-border: #ccc;
@@ -30,6 +31,7 @@ body.dark-mode {
     --wheel-item-shadow: rgba(0, 0, 0, 0.3);
     --wheel-item-hover-shadow: rgba(0, 0, 0, 0.5);
     --modal-bg: #333;
+    --todo-check-color: #333;
     --modal-shadow: rgba(0, 0, 0, 0.5);
     --input-bg: #444;
     --input-border: #555;
@@ -176,6 +178,7 @@ input:checked + .slider:before {
 }
 
 .setting-group { display: flex; }
+
 #settings-container input {
     padding: 8px;
     border: none;
@@ -237,6 +240,8 @@ input:checked + .slider:before {
     vertical-align: top;
     margin-left: 2px;
 }
+
+/* Analóg óra stílusai TÖRÖLVE */
 
 /* Kereső */
 #search-container {
@@ -341,23 +346,32 @@ input:checked + .slider:before {
     box-shadow: 0 8px 20px var(--wheel-item-hover-shadow);
 }
 body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
-.wheel-item img { width: 40px; height: 40px; border-radius: 8px; object-fit: cover; }
+
+/* A kép és a betű stílusai (egymásra helyezés) */
+.wheel-item img,
 .wheel-item-letter {
     width: 40px;
     height: 40px;
-    border-radius: 8px; /* Ugyanaz, mint az img-nél */
-    
-    /* Háttér és szöveg a CSS változókból */
+    border-radius: 8px;
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    transition: opacity 0.3s ease;
+}
+.wheel-item img {
+    object-fit: cover;
+    opacity: 0; /* Alapból a kép rejtett (ezt tölti be a JS) */
+}
+.wheel-item-letter {
     background-color: var(--button-secondary-bg); 
     color: var(--dark-text);
-    
-    /* Betű középre igazítása */
-    display: flex;
+    display: flex; 
     align-items: center;
     justify-content: center;
     font-size: 1.3em;
     font-weight: bold;
     user-select: none;
+    opacity: 1; /* Alapból a betű látszik */
 }
 
 /* Törlés gomb (Flexbox-szal középre) */
@@ -377,7 +391,6 @@ body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
     opacity: 0;
     transition: opacity 0.2s, transform 0.2s;
     z-index: 11;
-    /* Flexbox-szal középre igazítás */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -439,7 +452,13 @@ body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
     transition: background 0.4s ease;
 }
 
-/* Widget Stílusok (Jegyzet és Zene) */
+/* Teendőlista Widget */
+#notes-widget {
+    left: 20px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+}
 .widget {
     background: var(--glass-bg);
     padding: 15px;
@@ -462,40 +481,103 @@ body.dark-mode .wheel-item:hover { background: rgba(70, 70, 70, 1); }
     gap: 8px;
     user-select: none;
 }
-/* Jegyzet Widget (Bal alsó) */
-#notes-widget {
-    left: 20px;
-    height: 200px;
-    display: flex;
-    flex-direction: column;
-}
-#notes-textarea {
+#todo-list {
     flex-grow: 1;
-    background: transparent;
-    border: none;
+    overflow-y: auto;
+    margin-bottom: 10px;
+}
+#todo-input {
+    background: rgba(0, 0, 0, 0.2);
+    border: 1px solid var(--glass-border);
+    border-radius: 5px;
+    padding: 8px 10px;
     outline: none;
     color: var(--primary-text);
     font-family: Arial, sans-serif;
-    font-size: 0.95em;
-    resize: none;
-    padding: 5px;
 }
-#notes-textarea::-webkit-scrollbar { width: 8px; }
-#notes-textarea::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
-#notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
-body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+body.dark-mode #todo-input {
+    background: rgba(255, 255, 255, 0.1);
+}
+#todo-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+body.dark-mode #todo-input::placeholder {
+    color: rgba(255, 255, 255, 0.4);
+}
+.todo-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 5px;
+    border-bottom: 1px solid var(--glass-border);
+    font-size: 0.95em;
+    user-select: none;
+    cursor: pointer;
+}
+.todo-item.checked span {
+    text-decoration: line-through;
+    opacity: 0.5;
+}
+.todo-item span {
+    flex-grow: 1;
+    white-space: normal;
+    word-break: break-word;
+    text-align: left;
+}
+.todo-item .checkbox {
+    width: 18px;
+    height: 18px;
+    border: 2px solid var(--primary-text);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: background-color 0.2s, border-color 0.2s;
+}
+.todo-item .checkbox i {
+    font-size: 12px;
+    color: var(--todo-check-color);
+    opacity: 0;
+    transition: opacity 0.2s;
+}
+.todo-item.checked .checkbox {
+    background-color: var(--primary-text);
+    border-color: var(--primary-text);
+}
+.todo-item.checked .checkbox i {
+    opacity: 1;
+}
+.todo-item .delete-todo {
+    background: none;
+    border: none;
+    color: var(--primary-text);
+    opacity: 0.3;
+    font-size: 1.1em;
+    cursor: pointer;
+    padding: 5px;
+    transition: opacity 0.2s;
+}
+.todo-item .delete-todo:hover {
+    opacity: 1;
+    color: var(--button-danger-bg);
+}
+#todo-list::-webkit-scrollbar { width: 8px; }
+#todo-list::-webkit-scrollbar-track { background: rgba(0,0,0,0.1); border-radius: 10px; }
+#todo-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.3); border-radius: 10px; }
+body.dark-mode #todo-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
+    
 
-
+/* --- Reszponzív Stílusok (Tablet) --- */
 @media (max-width: 1100px) {
     #notes-widget {
-        display: flex; /* Láthatóvá tesszük a tartalom részeként */
-        position: relative; /* Kikapcsoljuk a "fixed" viselkedést */
+        display: flex;
+        position: relative;
         left: auto;
         bottom: auto;
-        width: 90%; /* Szélesség beállítása */
-        max-width: 700px; /* De ne legyen túl széles tableten */
-        height: 150px;
-        /* Automatikus margóval középre és távolság a keréktől */
+        width: 90%;
+        max-width: 700px;
+        height: 200px;
         margin: 40px auto 0 auto; 
     }
 }
@@ -506,29 +588,24 @@ body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,2
         padding: 10px;
     }
 
-    /* A felső sáv elemei egymás alá kerülnek */
     .top-container {
         flex-direction: column;
         align-items: center;
         gap: 20px;
     }
 
-    /* Időjárás lerövidítése */
     #weather-container {
         max-width: 220px;
         padding: 8px 12px;
         font-size: 1.0em;
     }
 
-    /* Beállítások menü középre */
     #settings-container {
         align-items: center;
     }
     #settings-content {
         align-items: center;
     }
-
-    /* Beállítások szöveg elrejtése */
     .settings-text {
         display: none;
     }
@@ -536,7 +613,6 @@ body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,2
         padding: 10px 12px;
     }
 
-    /* Az óra kisebb lesz ÉS a másodperc elrejtése */
     #clock-container {
         font-size: 4.0rem;
         margin-top: 10px;
@@ -545,8 +621,9 @@ body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,2
     .clock-seconds {
         display: none;
     }
+    
+    /* Analóg óra mobil stílusa TÖRÖLVE */
 
-    /* A kereső 100% széles lesz */
     #search-container {
         width: 95%;
         margin-bottom: 40px;
@@ -555,12 +632,16 @@ body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,2
         width: 100%;
     }
 
-    /* Fánk közepének módosítása */
     #center-label {
         display: none;
     }
+    #add-link-btn {
+        width: auto;
+        height: auto;
+        line-height: 1;
+        font-size: 2.5em;
+    }
 
-    /* A fánk-kerék lekicsinyítése */
     .wheel-container {
         transform: scale(0.8);
         margin-top: -30px; 
@@ -571,17 +652,12 @@ body.dark-mode #notes-textarea::-webkit-scrollbar-thumb { background: rgba(255,2
         width: 95%;
     }
 
-    /* Widgetek elrejtése mobilon */
     .widget {
         display: none;
     }
+    
     #notes-widget {
-        display: flex; /* De a jegyzetet láthatóvá tesszük */
-        position: relative; /* Visszaállítjuk a fixed pozíciót */
-        left: auto;
-        bottom: auto;
-        width: 90%; /* Illeszkedik a szélességhez */
-        height: 150px; /* Kisebb magasság */
-        margin-top: 40px; /* Távolság a fánk-kerék után */
+        margin-top: 20px;
+        height: 150px;
     }
 }
