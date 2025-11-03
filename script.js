@@ -27,7 +27,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const todoList = document.getElementById('todo-list');
     const todoInput = document.getElementById('todo-input');
 
-    // Analóg óra elemei TÖRÖLVE
+    // Naptár elemek
+    const calendarUrlInput = document.getElementById('calendar-url-input');
+    const calendarSetButton = document.getElementById('calendar-set-button');
+    const calendarIframe = document.getElementById('calendar-iframe');
+    const calendarHelpToggle = document.getElementById('calendar-help-toggle');
+    const calendarHelpText = document.getElementById('calendar-help-text');
 
     let wheelLinks = [];
     let todoItems = [];
@@ -46,11 +51,9 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Analóg óra funkció TÖRÖLVE
-
     // Óra indítása és frissítése
     updateClock();
-    setInterval(updateClock, 1000); // Visszaállítva csak az updateClock hívására
+    setInterval(updateClock, 1000);
 
     // Mentett háttérkép betöltése (URL vagy Data URL)
     const savedBg = localStorage.getItem('backgroundImageUrl');
@@ -380,13 +383,39 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.head.appendChild(style);
     
-    // --- 9. Óra Típus Kezelése (TÖRÖLVE) ---
+    // --- 9. Naptár Kezelése ---
+    if (calendarHelpToggle) {
+        calendarHelpToggle.addEventListener('click', () => {
+            calendarHelpText.classList.toggle('open');
+        });
+    }
 
-    // --- 10. Indítás (most már 9.) ---
+    if (calendarSetButton) {
+        calendarSetButton.addEventListener('click', () => {
+            const url = calendarUrlInput.value;
+            // Egyszerű ellenőrzés, hogy 'src=' link-e
+            if (url && url.includes('embed?src=')) {
+                calendarIframe.src = url;
+                localStorage.setItem('calendarUrl', url);
+            } else if (url) {
+                alert("Hibás link! Biztos, hogy a 'src=' linket másoltad ki a beágyazási kódból?");
+            }
+        });
+    }
+
+    function loadCalendar() {
+        const savedUrl = localStorage.getItem('calendarUrl');
+        if (savedUrl && calendarIframe) {
+            calendarIframe.src = savedUrl;
+            calendarUrlInput.value = savedUrl;
+        }
+    }
+
+    // --- 10. Indítás ---
     loadWeatherOnStart();
     loadLinks();
     loadTheme();
     loadTodos();
-    // loadClockType() hívás TÖRÖLVE
+    loadCalendar(); // Naptár betöltése
 
 });

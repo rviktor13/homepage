@@ -47,7 +47,19 @@
                     <input type="file" id="bg-file-input" accept="image/*">
                 </div>
 
+                <div class="setting-group">
+                    <input type="text" id="calendar-url-input" placeholder="Naptár 'src' linkje...">
+                    <button id="calendar-set-button">Beállít</button>
+                    <i class="fa-solid fa-circle-question settings-help-icon" id="calendar-help-toggle"></i>
                 </div>
+                <p id="calendar-help-text" class="settings-help-text">
+                    1. Google Naptár &rarr; Beállítások és megosztás<br>
+                    2. 'Hozzáférés nyilvánossá tétele' bepipálása<br>
+                    3. 'Naptár integrálása' &rarr; 'Beágyazási kód' másolása<br>
+                    4. Csak a kódban lévő <strong>src="...."</strong> linket illeszd be ide!
+                </p>
+
+            </div>
         </div>
     </div>
 
@@ -70,7 +82,7 @@
         </div>
 
         <div id="notes-widget" class="widget">
-            <h3><i class="fa-solid fa-list-check"></i>Teendők</h3>
+            <h3><i class="fa-solid fa-list-check"></i> Teendőlista</h3>
             <div id="todo-list"></div>
             <input type="text" id="todo-input" placeholder="Új teendő... (Enter)">
         </div>
@@ -87,6 +99,11 @@
                 <button id="cancel-link-btn">Mégse</button>
             </div>
         </div>
+    </div>
+
+    <div id="calendar-widget" class="widget">
+        <h3><i class="fa-solid fa-calendar-days"></i> Naptár</h3>
+        <iframe id="calendar-iframe" src="about:blank" style="border:0" frameborder="0" scrolling="no"></iframe>
     </div>
 
     <script src="script.js"></script>
