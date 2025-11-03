@@ -33,6 +33,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const calendarIframe = document.getElementById('calendar-iframe');
     const calendarHelpToggle = document.getElementById('calendar-help-toggle');
     const calendarHelpText = document.getElementById('calendar-help-text');
+    const calendarWidget = document.getElementById('calendar-widget'); // A naptár widget konténere
 
     let wheelLinks = [];
     let todoItems = [];
@@ -183,14 +184,19 @@ document.addEventListener('DOMContentLoaded', () => {
             a.style.setProperty('--i', i);
             a.style.setProperty('--angle', `${angle}deg`);
             
+            // --- Favicon / Betűs Ikon Logika ---
+
+            // 1. Hozz létre egy div-et a betűnek (ez az alapértelmezett, látható)
             const letterIcon = document.createElement('div');
             letterIcon.className = 'wheel-item-letter';
             const firstLetter = link.label ? link.label[0].toUpperCase() : '?';
             letterIcon.textContent = firstLetter;
             a.appendChild(letterIcon);
 
+            // 2. Hozz létre egy képet (alapból rejtett a CSS miatt)
             const img = document.createElement('img');
             
+            // 3. Eseménykezelő, MIUTÁN betöltődött
             img.onload = () => {
                 if (img.naturalWidth > 16) { 
                     img.style.opacity = '1';
@@ -198,10 +204,12 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             };
             
+            // 4. Eseménykezelő, HA TÉNYLEG hiba van (pl. 404)
             img.onerror = () => {
                 // Nem csinálunk semmit
             };
 
+            // 5. Indítsd el a kép betöltését
             try {
                 const domain = new URL(link.url).hostname;
                 img.src = `https://www.google.com/s2/favicons?domain=${domain}&sz=64`;
@@ -211,6 +219,9 @@ document.addEventListener('DOMContentLoaded', () => {
             
             a.appendChild(img);
 
+            // --- Logika vége ---
+
+            // Törlés gomb létrehozása
             const removeBtn = document.createElement('button');
             removeBtn.className = 'remove-link-btn';
             removeBtn.innerHTML = '&times;';
@@ -225,6 +236,7 @@ document.addEventListener('DOMContentLoaded', () => {
             });
             a.appendChild(removeBtn);
 
+            // Hover eseménykezelők
             a.addEventListener('mouseenter', () => {
                 centerLabel.textContent = link.label;
             });
@@ -393,11 +405,16 @@ document.addEventListener('DOMContentLoaded', () => {
     if (calendarSetButton) {
         calendarSetButton.addEventListener('click', () => {
             const url = calendarUrlInput.value;
-            // Egyszerű ellenőrzés, hogy 'src=' link-e
-            if (url && url.includes('embed?src=')) {
+            // Ha a felhasználó érvényes linket ír be
+            if (url && (url.includes('embed?src=') || url.includes('embed&src='))) { // Elfogadja mindkét Google formátumot
                 calendarIframe.src = url;
                 localStorage.setItem('calendarUrl', url);
-            } else if (url) {
+                calendarWidget.classList.add('calendar-loaded');
+            } else if (url.trim() === '') { // Ha a felhasználó kitörli a linket és ment
+                calendarIframe.src = 'about:blank';
+                localStorage.removeItem('calendarUrl');
+                calendarWidget.classList.remove('calendar-loaded');
+            } else { // Ha írt be valamit, de rosszat
                 alert("Hibás link! Biztos, hogy a 'src=' linket másoltad ki a beágyazási kódból?");
             }
         });
@@ -408,6 +425,9 @@ document.addEventListener('DOMContentLoaded', () => {
         if (savedUrl && calendarIframe) {
             calendarIframe.src = savedUrl;
             calendarUrlInput.value = savedUrl;
+            calendarWidget.classList.add('calendar-loaded');
+        } else if (calendarWidget) {
+            calendarWidget.classList.remove('calendar-loaded');
         }
     }
 

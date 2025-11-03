@@ -620,6 +620,18 @@ body.dark-mode #todo-input::placeholder {
 body.dark-mode #todo-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.2); }
     
 /* Google Naptár Widget (Jobb alsó) */
+#calendar-placeholder {
+    flex-grow: 1; /* Kitölti az iframe helyét */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    font-size: 0.9em;
+    opacity: 0.7;
+    padding: 10px;
+    user-select: none;
+    margin: 0;
+}
 #calendar-widget {
     right: 20px;
     height: 250px;
@@ -632,6 +644,13 @@ body.dark-mode #todo-list::-webkit-scrollbar-thumb { background: rgba(255,255,25
     border-radius: 8px !important;
     border: none !important;
     width: 100%;
+    display: none;
+}
+#calendar-widget.calendar-loaded #calendar-placeholder {
+    display: none; /* Rejtsd a placeholdert */
+}
+#calendar-widget.calendar-loaded #calendar-iframe {
+    display: block; /* Mutasd az iframe-et */
 }
 
 
