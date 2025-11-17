@@ -589,7 +589,7 @@ body.dark-mode #todo-input::placeholder {
 }
 .todo-item .checkbox i {
     font-size: 12px;
-    color: var(--modal-bg);
+    color: var(--todo-check-color);
     opacity: 0;
     transition: opacity 0.2s;
 }
@@ -753,3 +753,4 @@ body.dark-mode #todo-list::-webkit-scrollbar-thumb { background: rgba(255,255,25
         width: 90%; /* Mobilon is */
     }
 }
+
